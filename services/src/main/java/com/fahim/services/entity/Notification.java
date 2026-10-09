@@ -23,6 +23,7 @@ public class Notification {
 
     private Long taskId;
 
+    @Column(name = "is_read")
     private boolean read;
 
     private LocalDateTime createdAt;
