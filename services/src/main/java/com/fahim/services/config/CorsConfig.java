@@ -1,4 +1,5 @@
-package com.fahim.config;
+package com.fahim.services.config;
+
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

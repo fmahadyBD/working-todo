@@ -1,7 +1,9 @@
-package com.fahim.repository;
+package com.fahim.services.repository;
 
-import com.fahim.entity.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.fahim.services.entity.Notification;
+
 import java.util.List;
 
 public interface NotificationRepository extends JpaRepository<Notification, Long> {

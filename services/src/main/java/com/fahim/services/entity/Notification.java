@@ -1,4 +1,4 @@
-package com.fahim.entity;
+package com.fahim.services.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

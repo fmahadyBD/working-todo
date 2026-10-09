@@ -1,12 +1,13 @@
-package com.fahim.service;
+package com.fahim.services.service;
 
-import com.fahim.dto.DashboardResponse;
-import com.fahim.enums.TaskSection;
-import com.fahim.enums.TaskStatus;
-import com.fahim.repository.NotificationRepository;
-import com.fahim.repository.TaskRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import com.fahim.services.dto.DashboardResponse;
+import com.fahim.services.enums.TaskSection;
+import com.fahim.services.enums.TaskStatus;
+import com.fahim.services.repository.NotificationRepository;
+import com.fahim.services.repository.TaskRepository;
 
 @Service
 @RequiredArgsConstructor

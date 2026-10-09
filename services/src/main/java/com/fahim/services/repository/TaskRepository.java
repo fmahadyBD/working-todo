@@ -1,9 +1,12 @@
-package com.fahim.repository;
+package com.fahim.services.repository;
 
-import com.fahim.entity.Task;
-import com.fahim.enums.TaskSection;
-import com.fahim.enums.TaskStatus;
+
 import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.fahim.services.entity.Task;
+import com.fahim.services.enums.TaskSection;
+import com.fahim.services.enums.TaskStatus;
+
 import java.time.LocalDate;
 import java.util.List;
 

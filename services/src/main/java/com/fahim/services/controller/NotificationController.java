@@ -1,9 +1,12 @@
-package com.fahim.controller;
+package com.fahim.services.controller;
 
-import com.fahim.entity.Notification;
-import com.fahim.service.NotificationService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import com.fahim.services.entity.Notification;
+import com.fahim.services.service.NotificationService;
+
 import java.util.List;
 
 @RestController

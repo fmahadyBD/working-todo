@@ -1,14 +1,16 @@
-package com.fahim.scheduler;
+package com.fahim.services.scheduler;
 
-import com.fahim.entity.Task;
-import com.fahim.enums.TaskSection;
-import com.fahim.enums.TaskStatus;
-import com.fahim.repository.TaskRepository;
-import com.fahim.service.NotificationService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import com.fahim.services.entity.Task;
+import com.fahim.services.enums.TaskSection;
+import com.fahim.services.enums.TaskStatus;
+import com.fahim.services.repository.TaskRepository;
+import com.fahim.services.service.NotificationService;
+
 import java.util.List;
 
 @Slf4j

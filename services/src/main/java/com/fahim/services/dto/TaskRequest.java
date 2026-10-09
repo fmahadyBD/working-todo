@@ -1,11 +1,13 @@
-package com.fahim.dto;
+package com.fahim.services.dto;
 
-import com.fahim.enums.Priority;
-import com.fahim.enums.TaskSection;
-import com.fahim.enums.TaskStatus;
+
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import java.time.LocalDate;
+
+import com.fahim.services.enums.Priority;
+import com.fahim.services.enums.TaskSection;
+import com.fahim.services.enums.TaskStatus;
 
 @Data
 public class TaskRequest {

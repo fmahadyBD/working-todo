@@ -1,9 +1,12 @@
-package com.fahim.service;
+package com.fahim.services.service;
 
-import com.fahim.entity.Notification;
-import com.fahim.repository.NotificationRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import com.fahim.services.entity.Notification;
+import com.fahim.services.repository.NotificationRepository;
+
 import java.util.List;
 
 @Service

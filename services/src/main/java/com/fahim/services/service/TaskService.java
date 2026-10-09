@@ -1,13 +1,16 @@
-package com.fahim.service;
+package com.fahim.services.service;
 
-import com.fahim.dto.TaskRequest;
-import com.fahim.entity.Task;
-import com.fahim.enums.TaskSection;
-import com.fahim.enums.TaskStatus;
-import com.fahim.exception.ResourceNotFoundException;
-import com.fahim.repository.TaskRepository;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import com.fahim.services.dto.TaskRequest;
+import com.fahim.services.entity.Task;
+import com.fahim.services.enums.TaskSection;
+import com.fahim.services.enums.TaskStatus;
+import com.fahim.services.exception.ResourceNotFoundException;
+import com.fahim.services.repository.TaskRepository;
+
 import java.time.LocalDateTime;
 import java.util.List;
 

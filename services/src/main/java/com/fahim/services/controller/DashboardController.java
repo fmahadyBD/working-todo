@@ -1,9 +1,11 @@
-package com.fahim.controller;
+package com.fahim.services.controller;
 
-import com.fahim.dto.DashboardResponse;
-import com.fahim.service.DashboardService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import com.fahim.services.dto.DashboardResponse;
+import com.fahim.services.service.DashboardService;
 
 @RestController
 @RequestMapping("/api/dashboard")

@@ -1,4 +1,4 @@
-package com.fahim.dto;
+package com.fahim.services.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

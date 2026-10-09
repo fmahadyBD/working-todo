@@ -1,12 +1,13 @@
-package com.fahim.entity;
+package com.fahim.services.entity;
 
-import com.fahim.enums.Priority;
-import com.fahim.enums.TaskSection;
-import com.fahim.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import com.fahim.services.enums.Priority;
+import com.fahim.services.enums.TaskSection;
+import com.fahim.services.enums.TaskStatus;
 
 @Entity
 @Table(name = "tasks")

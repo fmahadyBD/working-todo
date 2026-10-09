@@ -1,13 +1,16 @@
-package com.fahim.controller;
+package com.fahim.services.controller;
 
-import com.fahim.dto.TaskRequest;
-import com.fahim.entity.Task;
-import com.fahim.enums.TaskSection;
-import com.fahim.service.TaskService;
+
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import com.fahim.services.dto.TaskRequest;
+import com.fahim.services.entity.Task;
+import com.fahim.services.enums.TaskSection;
+import com.fahim.services.service.TaskService;
+
 import java.util.List;
 
 @RestController
