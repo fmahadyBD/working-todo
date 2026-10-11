@@ -1,6 +1,5 @@
 package com.fahim.services.controller;
 
-
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,18 +21,31 @@ public class TaskController {
     private final TaskService service;
 
     @GetMapping
-    public List<Task> getAll() { return service.getAll(); }
+    public List<Task> getAll() {
+        return service.getAll();
+    }
 
+    /** All tasks (incl. completed) in a section. */
     @GetMapping("/section/{section}")
     public List<Task> getBySection(@PathVariable TaskSection section) {
         return service.getBySection(section);
     }
 
+    /** Only pending/in-progress tasks in a section. */
+    @GetMapping("/section/{section}/active")
+    public List<Task> getActiveBySection(@PathVariable TaskSection section) {
+        return service.getActiveBySection(section);
+    }
+
     @GetMapping("/{id}")
-    public Task getById(@PathVariable Long id) { return service.getById(id); }
+    public Task getById(@PathVariable Long id) {
+        return service.getById(id);
+    }
 
     @PostMapping
-    public Task create(@Valid @RequestBody TaskRequest req) { return service.create(req); }
+    public Task create(@Valid @RequestBody TaskRequest req) {
+        return service.create(req);
+    }
 
     @PutMapping("/{id}")
     public Task update(@PathVariable Long id, @Valid @RequestBody TaskRequest req) {
@@ -41,7 +53,14 @@ public class TaskController {
     }
 
     @PatchMapping("/{id}/complete")
-    public Task complete(@PathVariable Long id) { return service.complete(id); }
+    public Task complete(@PathVariable Long id) {
+        return service.complete(id);
+    }
+
+    @PatchMapping("/{id}/uncomplete")
+    public Task uncomplete(@PathVariable Long id) {
+        return service.uncomplete(id);
+    }
 
     @PatchMapping("/{id}/move/{section}")
     public Task move(@PathVariable Long id, @PathVariable TaskSection section) {
@@ -52,5 +71,10 @@ public class TaskController {
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/archive/completed")
+    public List<Task> getCompleted() {
+        return service.getAllCompleted();
     }
 }

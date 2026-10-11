@@ -21,36 +21,71 @@ public class TaskRolloverScheduler {
     private final TaskRepository taskRepo;
     private final NotificationService notifService;
 
-    // Every day at 11:59 PM - completed TODAY -> WEEKLY
+    /**
+     * Runs at 23:59 every day.
+     * Moves COMPLETED tasks from TODAY → WEEKLY (archives them).
+     */
     @Scheduled(cron = "0 59 23 * * *")
     public void rolloverTodayToWeekly() {
-        List<Task> completed = taskRepo.findBySectionAndStatus(TaskSection.TODAY, TaskStatus.COMPLETED);
+        List<Task> completed =
+            taskRepo.findBySectionAndStatus(TaskSection.TODAY, TaskStatus.COMPLETED);
+
+        if (completed.isEmpty()) {
+            log.info("Rollover TODAY→WEEKLY: nothing to do");
+            return;
+        }
+
         completed.forEach(t -> t.setSection(TaskSection.WEEKLY));
         taskRepo.saveAll(completed);
-        if (!completed.isEmpty()) {
-            notifService.create("Daily Rollover", completed.size() + " tasks moved to Weekly", null);
-        }
+
+        notifService.create("Daily Rollover",
+            completed.size() + " completed task(s) archived to Weekly", null);
+
         log.info("Rolled over {} tasks from TODAY to WEEKLY", completed.size());
     }
 
-    // Every Sunday 11:59 PM - completed WEEKLY -> MONTHLY
+    /**
+     * Runs at 23:59 every Sunday.
+     * Moves COMPLETED tasks from WEEKLY → MONTHLY (archives them).
+     */
     @Scheduled(cron = "0 59 23 * * SUN")
     public void rolloverWeeklyToMonthly() {
-        List<Task> completed = taskRepo.findBySectionAndStatus(TaskSection.WEEKLY, TaskStatus.COMPLETED);
+        List<Task> completed =
+            taskRepo.findBySectionAndStatus(TaskSection.WEEKLY, TaskStatus.COMPLETED);
+
+        if (completed.isEmpty()) {
+            log.info("Rollover WEEKLY→MONTHLY: nothing to do");
+            return;
+        }
+
         completed.forEach(t -> t.setSection(TaskSection.MONTHLY));
         taskRepo.saveAll(completed);
-        if (!completed.isEmpty()) {
-            notifService.create("Weekly Rollover", completed.size() + " tasks moved to Monthly", null);
-        }
+
+        notifService.create("Weekly Rollover",
+            completed.size() + " completed task(s) archived to Monthly", null);
+
         log.info("Rolled over {} tasks from WEEKLY to MONTHLY", completed.size());
     }
 
-    // Every midnight 12:01 AM - TOMORROW -> TODAY
+    /**
+     * Runs at 00:01 every day.
+     * Promotes ALL tasks (pending + completed) from TOMORROW → TODAY.
+     */
     @Scheduled(cron = "0 1 0 * * *")
     public void promoteTomorrowToToday() {
         List<Task> tomorrow = taskRepo.findBySection(TaskSection.TOMORROW);
+
+        if (tomorrow.isEmpty()) {
+            log.info("Promote TOMORROW→TODAY: nothing to do");
+            return;
+        }
+
         tomorrow.forEach(t -> t.setSection(TaskSection.TODAY));
         taskRepo.saveAll(tomorrow);
+
+        notifService.create("Morning Rollover",
+            tomorrow.size() + " task(s) moved from Tomorrow to Today", null);
+
         log.info("Promoted {} tasks from TOMORROW to TODAY", tomorrow.size());
     }
 }

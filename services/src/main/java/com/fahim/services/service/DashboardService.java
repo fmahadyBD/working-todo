@@ -18,12 +18,18 @@ public class DashboardService {
 
     public DashboardResponse getStats() {
         return new DashboardResponse(
-            taskRepo.countBySection(TaskSection.TODAY),
-            taskRepo.countBySection(TaskSection.TOMORROW),
-            taskRepo.countBySection(TaskSection.WEEKLY),
-            taskRepo.countBySection(TaskSection.MONTHLY),
+            // ✅ Active (pending + in-progress) per section
+            taskRepo.countActiveBySection(TaskSection.TODAY),
+            taskRepo.countActiveBySection(TaskSection.TOMORROW),
+            taskRepo.countActiveBySection(TaskSection.WEEKLY),
+            taskRepo.countActiveBySection(TaskSection.MONTHLY),
+
+            // Totals across all sections
             taskRepo.countByStatus(TaskStatus.COMPLETED),
-            taskRepo.countByStatus(TaskStatus.PENDING),
+            taskRepo.countByStatus(TaskStatus.PENDING)
+                + taskRepo.countByStatus(TaskStatus.IN_PROGRESS),
+
+            // Unread notifications
             notifRepo.findByReadFalseOrderByCreatedAtDesc().size()
         );
     }
