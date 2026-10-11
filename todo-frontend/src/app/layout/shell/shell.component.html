@@ -1,7 +1,9 @@
 <div class="shell" [class.collapsed]="!sidebarOpen">
   <aside class="sidebar">
     <div class="brand">
-      <div class="brand-mark">T</div>
+      <div class="brand-mark">
+        <i class="fa-solid fa-list-check"></i>
+      </div>
       <span class="brand-name" *ngIf="sidebarOpen">TaskFlow</span>
     </div>
 
@@ -10,13 +12,13 @@
          [routerLink]="item.path"
          routerLinkActive="active"
          class="nav-item">
-        <span class="nav-icon">{{ item.icon }}</span>
+        <i class="fa-solid nav-icon" [ngClass]="item.icon"></i>
         <span class="nav-label" *ngIf="sidebarOpen">{{ item.label }}</span>
       </a>
     </nav>
 
     <button class="collapse-btn" (click)="toggleSidebar()">
-      {{ sidebarOpen ? '⟨' : '⟩' }}
+      <i class="fa-solid" [ngClass]="sidebarOpen ? 'fa-chevron-left' : 'fa-chevron-right'"></i>
     </button>
   </aside>
 

@@ -12,17 +12,17 @@ import { NotificationService } from '../../services/notification.service';
 })
 export class ShellComponent {
   nav = [
-    { path: '/dashboard', label: 'Dashboard', icon: '📊' },
-    { path: '/today', label: 'Today', icon: '☀️' },
-    { path: '/tomorrow', label: 'Tomorrow', icon: '🌅' },
-    { path: '/weekly', label: 'Weekly', icon: '📅' },
-    { path: '/monthly', label: 'Monthly', icon: '🗓️' },
-    { path: '/notifications', label: 'Notifications', icon: '🔔' },
+    { path: '/dashboard', label: 'Dashboard', icon: 'fa-chart-line' },
+    { path: '/today', label: 'Today', icon: 'fa-sun' },
+    { path: '/tomorrow', label: 'Tomorrow', icon: 'fa-cloud-sun' },
+    { path: '/weekly', label: 'Weekly', icon: 'fa-calendar-week' },
+    { path: '/monthly', label: 'Monthly', icon: 'fa-calendar-days' },
+    { path: '/notifications', label: 'Notifications', icon: 'fa-bell' },
   ];
 
   sidebarOpen = true;
 
-  constructor(public notifService: NotificationService) {}
+  constructor(public notifService: NotificationService) { }
 
   toggleSidebar() { this.sidebarOpen = !this.sidebarOpen; }
 }
