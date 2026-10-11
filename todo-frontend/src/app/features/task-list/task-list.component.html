@@ -1,0 +1,171 @@
+<div class="sheet-wrap">
+
+  <!-- ============ TOOLBAR ============ -->
+  <div class="sheet-toolbar">
+    <input class="search"
+           [(ngModel)]="searchTerm"
+           placeholder="🔍 Search tasks…" />
+
+    <select class="filter" [(ngModel)]="statusFilter">
+      <option value="ALL">All statuses</option>
+      <option value="PENDING">Pending</option>
+      <option value="COMPLETED">Completed</option>
+    </select>
+
+    <select class="filter" [(ngModel)]="priorityFilter">
+      <option value="ALL">All priorities</option>
+      <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+    </select>
+
+    <span class="count">
+      {{ visibleTasks.length }} / {{ tasks.length }} rows
+    </span>
+  </div>
+
+  <!-- ============ TABLE ============ -->
+  <div class="sheet-scroll">
+    <table class="sheet">
+      <thead>
+        <tr>
+          <!-- Checkbox column -->
+          <th class="col-check"></th>
+
+          <!-- Row # -->
+          <th class="row-num">#</th>
+
+          <!-- Task -->
+          <th (click)="setSort('task')" [class.sorted]="sortKey === 'task'">
+            Task <span class="arrow">{{ sortIcon('task') }}</span>
+          </th>
+
+          <!-- Category -->
+          <th (click)="setSort('category')" [class.sorted]="sortKey === 'category'">
+            Category <span class="arrow">{{ sortIcon('category') }}</span>
+          </th>
+
+          <!-- Priority -->
+          <th (click)="setSort('priority')" [class.sorted]="sortKey === 'priority'">
+            Priority <span class="arrow">{{ sortIcon('priority') }}</span>
+          </th>
+
+          <!-- Status -->
+          <th (click)="setSort('status')" [class.sorted]="sortKey === 'status'">
+            Status <span class="arrow">{{ sortIcon('status') }}</span>
+          </th>
+
+          <!-- Planned -->
+          <th (click)="setSort('plannedDate')" [class.sorted]="sortKey === 'plannedDate'">
+            Planned <span class="arrow">{{ sortIcon('plannedDate') }}</span>
+          </th>
+
+          <!-- Goal -->
+          <th (click)="setSort('projectGoal')" [class.sorted]="sortKey === 'projectGoal'">
+            Goal <span class="arrow">{{ sortIcon('projectGoal') }}</span>
+          </th>
+
+          <!-- Notes -->
+          <th>Notes</th>
+
+          <!-- Actions -->
+          <th>Actions</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <!-- Empty state -->
+        <tr *ngIf="visibleTasks.length === 0">
+          <td [attr.colspan]="10" class="empty-cell">
+            <span class="empty-icon">📭</span>
+            <span>No tasks match your filters.</span>
+          </td>
+        </tr>
+
+        <!-- Rows -->
+        <tr *ngFor="let t of visibleTasks; let i = index; trackBy: trackId"
+            [class.completed]="t.status === 'COMPLETED'"
+            [class.saving]="isSaving(t)">
+
+          <!-- ✅ Checkbox -->
+          <td class="col-check">
+            <label class="check-wrap">
+              <input type="checkbox"
+                     [checked]="t.status === 'COMPLETED'"
+                     [disabled]="isSaving(t)"
+                     (change)="toggleComplete(t, $any($event.target).checked)" />
+              <span class="checkmark"></span>
+            </label>
+          </td>
+
+          <!-- # -->
+          <td class="row-num">{{ i + 1 }}</td>
+
+          <!-- Task -->
+          <td>
+            <div class="cell-task" [title]="t.task">{{ t.task }}</div>
+          </td>
+
+          <!-- Category -->
+          <td>
+            <span *ngIf="t.category; else dash" class="cell-muted">{{ t.category }}</span>
+          </td>
+
+          <!-- ✅ Priority dropdown -->
+          <td>
+            <select class="priority-select"
+                    [ngClass]="priorityClass(t.priority)"
+                    [ngModel]="t.priority || 'MEDIUM'"
+                    [disabled]="isSaving(t)"
+                    (ngModelChange)="changePriority(t, $event)">
+              <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+            </select>
+          </td>
+
+          <!-- Status -->
+          <td>
+            <span class="pill" [ngClass]="statusClass(t.status)">
+              {{ t.status || 'PENDING' }}
+            </span>
+          </td>
+
+          <!-- Planned -->
+          <td class="cell-muted">
+            {{ t.plannedDate || '—' }}
+          </td>
+
+          <!-- Goal -->
+          <td>
+            <span *ngIf="t.projectGoal; else dash" class="cell-muted">{{ t.projectGoal }}</span>
+          </td>
+
+          <!-- Notes -->
+          <td>
+            <span *ngIf="t.notes; else dash" class="cell-notes" [title]="t.notes">{{ t.notes }}</span>
+          </td>
+
+          <!-- Actions -->
+          <td>
+            <div class="cell-actions">
+              <button class="ghost icon-btn"
+                      (click)="move(t, 'TODAY')"
+                      title="Move to Today">☀️</button>
+              <button class="ghost icon-btn"
+                      (click)="move(t, 'TOMORROW')"
+                      title="Move to Tomorrow">🌅</button>
+              <button class="ghost icon-btn"
+                      (click)="move(t, 'WEEKLY')"
+                      title="Move to Weekly">📅</button>
+              <button class="ghost icon-btn"
+                      (click)="move(t, 'MONTHLY')"
+                      title="Move to Monthly">🗓️</button>
+              <button class="danger icon-btn"
+                      (click)="remove(t)"
+                      title="Delete">🗑</button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<ng-template #dash><span class="cell-empty">—</span></ng-template>

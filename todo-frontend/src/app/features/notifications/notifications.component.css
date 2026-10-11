@@ -1,0 +1,58 @@
+.page-head {
+  display: flex; justify-content: space-between; align-items: flex-start;
+  margin-bottom: 2rem; gap: 1rem; flex-wrap: wrap;
+}
+.page-head h1 {
+  font-size: 2rem; font-weight: 800; letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #fff, #b0b0d0);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.subtitle { color: var(--text-2); font-size: 0.9rem; margin-top: 0.25rem; }
+.subtitle strong { color: var(--brand-500); }
+
+.notif-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+
+.notif-item {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 1rem 1.2rem;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all 0.25s var(--ease);
+  animation: fadeUp 0.4s var(--ease) both;
+}
+.notif-item:hover { background: var(--bg-2); border-color: var(--border-hover); }
+.notif-item.unread {
+  background: linear-gradient(90deg, rgba(99,102,241,0.08), var(--bg-1));
+  border-color: rgba(99,102,241,0.25);
+}
+
+.dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: var(--brand-500);
+  box-shadow: 0 0 10px var(--brand-glow);
+  flex-shrink: 0;
+  animation: pulse 2s infinite;
+}
+@keyframes pulse { 50% { opacity: 0.5; } }
+
+.notif-body { flex: 1; min-width: 0; }
+.notif-top {
+  display: flex; justify-content: space-between; align-items: baseline;
+  gap: 1rem; margin-bottom: 0.15rem;
+}
+.notif-top strong { font-size: 0.95rem; color: #fff; }
+.notif-top time { font-size: 0.75rem; color: var(--text-3); flex-shrink: 0; }
+.notif-body p { font-size: 0.85rem; color: var(--text-2); }
+
+.empty {
+  text-align: center; padding: 4rem 2rem;
+  background: var(--bg-1); border: 1px dashed var(--border);
+  border-radius: var(--radius-lg);
+}
+.empty-icon { font-size: 3rem; margin-bottom: 0.75rem; opacity: 0.5; }
+.empty h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+.empty p { color: var(--text-2); font-size: 0.9rem; }
+
+button.xs { padding: 0.35rem 0.7rem; font-size: 0.75rem; }

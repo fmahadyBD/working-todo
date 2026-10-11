@@ -1,0 +1,26 @@
+<div class="shell" [class.collapsed]="!sidebarOpen">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-mark">T</div>
+      <span class="brand-name" *ngIf="sidebarOpen">TaskFlow</span>
+    </div>
+
+    <nav class="nav">
+      <a *ngFor="let item of nav"
+         [routerLink]="item.path"
+         routerLinkActive="active"
+         class="nav-item">
+        <span class="nav-icon">{{ item.icon }}</span>
+        <span class="nav-label" *ngIf="sidebarOpen">{{ item.label }}</span>
+      </a>
+    </nav>
+
+    <button class="collapse-btn" (click)="toggleSidebar()">
+      {{ sidebarOpen ? '⟨' : '⟩' }}
+    </button>
+  </aside>
+
+  <main class="main">
+    <router-outlet />
+  </main>
+</div>

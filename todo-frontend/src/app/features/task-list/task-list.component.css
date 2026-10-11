@@ -1,0 +1,325 @@
+/* ============================================
+   GOOGLE SHEETS–STYLE TASK TABLE
+   ============================================ */
+.sheet-wrap {
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  animation: fadeUp 0.4s var(--ease);
+}
+
+/* ---------- Toolbar ---------- */
+.sheet-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  background: var(--bg-2);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.sheet-toolbar .search {
+  flex: 1;
+  min-width: 220px;
+  max-width: 360px;
+  padding: 0.5rem 0.85rem;
+  font-size: 0.875rem;
+}
+.sheet-toolbar .filter {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  width: auto;
+  min-width: 130px;
+}
+.sheet-toolbar .count {
+  margin-left: auto;
+  font-size: 0.75rem;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+}
+
+/* ---------- Scroll container ---------- */
+.sheet-scroll {
+  overflow: auto;
+  max-height: 70vh;
+}
+
+/* ---------- Table ---------- */
+.sheet {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.875rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Header ---------- */
+.sheet thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: var(--bg-2);
+  color: var(--text-2);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  text-align: left;
+  padding: 0.75rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  transition: background 0.15s var(--ease), color 0.15s var(--ease);
+}
+.sheet thead th:hover {
+  background: var(--bg-3);
+  color: var(--text-1);
+}
+.sheet thead th.sorted { color: var(--brand-500); }
+.sheet thead th .arrow {
+  opacity: 0.5;
+  margin-left: 0.35rem;
+  font-size: 0.75rem;
+}
+.sheet thead th.sorted .arrow { opacity: 1; }
+
+.sheet thead th.row-num,
+.sheet thead th.col-check {
+  text-align: center;
+  cursor: default;
+}
+.sheet thead th.row-num { width: 48px; }
+.sheet thead th.col-check { width: 44px; }
+.sheet thead th.row-num:hover,
+.sheet thead th.col-check:hover {
+  background: var(--bg-2);
+  color: var(--text-2);
+}
+
+/* ---------- Body ---------- */
+.sheet tbody td {
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  vertical-align: middle;
+  color: var(--text-1);
+  transition: background 0.12s var(--ease);
+}
+
+.sheet tbody td.row-num {
+  width: 48px;
+  text-align: center;
+  color: var(--text-3);
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--bg-2);
+}
+
+.sheet tbody td.col-check {
+  width: 44px;
+  text-align: center;
+  background: var(--bg-2);
+}
+
+.sheet tbody tr { transition: background 0.12s var(--ease); }
+.sheet tbody tr:hover td { background: rgba(255, 255, 255, 0.025); }
+.sheet tbody tr:hover td.row-num,
+.sheet tbody tr:hover td.col-check { background: var(--bg-3); }
+
+.sheet tbody tr.saving { opacity: 0.55; pointer-events: none; }
+
+.sheet tbody tr.completed .cell-task {
+  color: var(--text-3);
+  text-decoration: line-through;
+  text-decoration-color: rgba(255,255,255,0.25);
+}
+.sheet tbody tr.completed td {
+  color: var(--text-3);
+}
+
+/* ---------- Custom Checkbox ---------- */
+.check-wrap {
+  position: relative;
+  display: inline-flex;
+  cursor: pointer;
+  width: 20px;
+  height: 20px;
+}
+.check-wrap input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+.checkmark {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--border-hover);
+  border-radius: 6px;
+  background: var(--bg-1);
+  display: grid;
+  place-items: center;
+  transition: all 0.2s var(--ease);
+}
+.checkmark::after {
+  content: '';
+  width: 5px;
+  height: 10px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg) scale(0);
+  transition: transform 0.15s var(--ease);
+  margin-top: -2px;
+}
+.check-wrap:hover .checkmark {
+  border-color: var(--brand-500);
+  box-shadow: 0 0 0 3px var(--brand-glow);
+}
+.check-wrap input:checked + .checkmark {
+  background: linear-gradient(135deg, var(--success), #059669);
+  border-color: var(--success);
+}
+.check-wrap input:checked + .checkmark::after {
+  transform: rotate(45deg) scale(1);
+}
+.check-wrap input:disabled + .checkmark {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Cells ---------- */
+.cell-task {
+  font-weight: 600;
+  color: #fff;
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cell-muted { color: var(--text-2); }
+.cell-notes {
+  max-width: 240px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--text-2);
+  font-size: 0.82rem;
+  display: inline-block;
+}
+.cell-empty { color: var(--text-3); font-style: italic; }
+
+/* ---------- Priority Dropdown ---------- */
+.priority-select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  padding: 0.28rem 1.6rem 0.28rem 0.75rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  width: auto;
+  min-width: 110px;
+  background-image:
+    linear-gradient(45deg, transparent 50%, currentColor 50%),
+    linear-gradient(135deg, currentColor 50%, transparent 50%);
+  background-position:
+    calc(100% - 14px) 50%,
+    calc(100% - 9px) 50%;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  transition: all 0.2s var(--ease);
+}
+.priority-select:hover { filter: brightness(1.15); }
+.priority-select:focus {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--brand-glow);
+}
+
+/* Priority color variants */
+.priority-select.prio-low {
+  background-color: rgba(59,130,246,0.15);
+  color: #93c5fd;
+  border-color: rgba(59,130,246,0.3);
+}
+.priority-select.prio-medium {
+  background-color: rgba(245,158,11,0.15);
+  color: #fcd34d;
+  border-color: rgba(245,158,11,0.3);
+}
+.priority-select.prio-high {
+  background-color: rgba(249,115,22,0.18);
+  color: #fdba74;
+  border-color: rgba(249,115,22,0.35);
+}
+.priority-select.prio-urgent {
+  background-color: rgba(239,68,68,0.18);
+  color: #fca5a5;
+  border-color: rgba(239,68,68,0.4);
+  animation: pulse 2s infinite;
+}
+@keyframes pulse {
+  50% { box-shadow: 0 0 0 4px rgba(239,68,68,0.25); }
+}
+
+/* Dropdown option list (limited styling in some browsers) */
+.priority-select option {
+  background: var(--bg-2);
+  color: var(--text-1);
+  font-weight: 600;
+}
+
+/* ---------- Status Pill ---------- */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.22rem 0.6rem;
+  border-radius: var(--radius-full);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.pill.status-pending     { background: rgba(148,163,184,0.15); color: #cbd5e1; }
+.pill.status-in_progress { background: rgba(59,130,246,0.15);  color: #93c5fd; }
+.pill.status-completed   { background: rgba(16,185,129,0.15);  color: #6ee7b7; }
+.pill.status-archived    { background: rgba(107,114,128,0.15); color: #9ca3af; }
+
+/* ---------- Row Actions ---------- */
+.cell-actions {
+  display: flex;
+  gap: 0.3rem;
+  white-space: nowrap;
+}
+.cell-actions button {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.85rem;
+  line-height: 1;
+  border-radius: var(--radius-sm);
+}
+.cell-actions .icon-btn {
+  min-width: 32px;
+  text-align: center;
+}
+
+/* ---------- Empty state ---------- */
+.sheet tbody td.empty-cell {
+  text-align: center;
+  padding: 4rem 1rem;
+  color: var(--text-2);
+  border-right: none;
+}
+.sheet tbody td.empty-cell .empty-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+  opacity: 0.6;
+}

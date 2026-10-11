@@ -1,0 +1,31 @@
+<header class="page-head fade-up">
+  <div>
+    <h1>Notifications</h1>
+    <p class="subtitle">
+      {{ items.length }} total · <strong>{{ unreadCount }} unread</strong>
+    </p>
+  </div>
+  <button class="ghost" (click)="load()" [disabled]="loading">
+    {{ loading ? 'Loading…' : '↻ Refresh' }}
+  </button>
+</header>
+
+<div class="empty" *ngIf="!loading && items.length === 0">
+  <div class="empty-icon">🔕</div>
+  <h3>No notifications</h3>
+  <p>You're all caught up!</p>
+</div>
+
+<ul class="notif-list" *ngIf="items.length > 0">
+  <li *ngFor="let n of items" class="notif-item" [class.unread]="!n.read">
+    <span class="dot" *ngIf="!n.read"></span>
+    <div class="notif-body">
+      <div class="notif-top">
+        <strong>{{ n.title }}</strong>
+        <time>{{ n.createdAt | date:'short' }}</time>
+      </div>
+      <p>{{ n.message }}</p>
+    </div>
+    <button class="ghost xs" *ngIf="!n.read" (click)="markRead(n)">Mark read</button>
+  </li>
+</ul>

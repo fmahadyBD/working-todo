@@ -1,0 +1,26 @@
+.page-head {
+  margin-bottom: 2rem;
+  animation: fadeUp 0.4s var(--ease);
+}
+.head-left { display: flex; align-items: center; gap: 1rem; }
+.page-icon {
+  font-size: 2rem;
+  width: 60px; height: 60px;
+  display: grid; place-items: center;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.page-head h1 {
+  font-size: 1.9rem; font-weight: 800; letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #fff, #b0b0d0);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.subtitle { color: var(--text-2); font-size: 0.9rem; margin-top: 0.15rem; }
+.subtitle strong { color: var(--brand-500); }
+
+.loading {
+  padding: 3rem; text-align: center; color: var(--text-2);
+  background: var(--bg-1); border-radius: var(--radius-lg);
+}

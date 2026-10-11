@@ -1,0 +1,62 @@
+<section class="form-card fade-up" [class.open]="expanded">
+  <header class="form-head" (click)="toggle()">
+    <div class="head-left">
+      <div class="plus" [class.rotated]="expanded">+</div>
+      <div>
+        <h3>Create Task</h3>
+        <p class="hint">Click to {{ expanded ? 'collapse' : 'add a new task' }}</p>
+      </div>
+    </div>
+    <span class="chevron">{{ expanded ? '▲' : '▼' }}</span>
+  </header>
+
+  <form *ngIf="expanded" (ngSubmit)="submit()" class="form-body" #f="ngForm">
+    <div *ngIf="error" class="form-error">⚠️ {{ error }}</div>
+
+    <div class="field full">
+      <label>Task name *</label>
+      <input [(ngModel)]="model.task" name="task" placeholder="What needs to be done?" required />
+    </div>
+
+    <div class="field">
+      <label>Category</label>
+      <input [(ngModel)]="model.category" name="category" placeholder="e.g. Work, Personal" />
+    </div>
+
+    <div class="field">
+      <label>Priority</label>
+      <select [(ngModel)]="model.priority" name="priority">
+        <option *ngFor="let p of priorities" [value]="p">{{ p }}</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Section</label>
+      <select [(ngModel)]="model.section" name="section">
+        <option *ngFor="let s of sections" [value]="s">{{ s }}</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Planned date</label>
+      <input type="date" [(ngModel)]="model.plannedDate" name="plannedDate" />
+    </div>
+
+    <div class="field full">
+      <label>Project / Goal</label>
+      <input [(ngModel)]="model.projectGoal" name="projectGoal" placeholder="Linked project or goal" />
+    </div>
+
+    <div class="field full">
+      <label>Notes</label>
+      <textarea rows="3" [(ngModel)]="model.notes" name="notes" placeholder="Add details…"></textarea>
+    </div>
+
+    <div class="form-actions full">
+      <button type="button" class="ghost" (click)="toggle()">Cancel</button>
+      <button type="submit" class="primary" [disabled]="submitting">
+        {{ submitting ? 'Creating…' : '+ Create Task' }}
+      </button>
+    </div>
+  </form>
+</section>

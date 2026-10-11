@@ -1,0 +1,14 @@
+<header class="page-head fade-up">
+  <div class="head-left">
+    <span class="page-icon">{{ icon }}</span>
+    <div>
+      <h1>{{ title }}</h1>
+      <p class="subtitle">{{ subtitle }} · <strong>{{ tasks.length }}</strong> task{{ tasks.length !== 1 ? 's' : '' }}</p>
+    </div>
+  </div>
+</header>
+
+<app-task-form (created)="load()" />
+
+<div *ngIf="loading" class="loading">Loading tasks…</div>
+<app-task-list *ngIf="!loading" [tasks]="tasks" (changed)="load()" />

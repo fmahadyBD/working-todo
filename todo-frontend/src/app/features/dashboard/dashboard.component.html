@@ -1,0 +1,32 @@
+<header class="page-head fade-up">
+  <div>
+    <h1>Dashboard</h1>
+    <p class="subtitle">Overview of your tasks and progress</p>
+  </div>
+  <button class="ghost" (click)="load()" [disabled]="loading">
+    {{ loading ? 'Loading…' : '↻ Refresh' }}
+  </button>
+</header>
+
+<div *ngIf="error" class="alert-error fade-up">⚠️ {{ error }}</div>
+
+<div class="grid" *ngIf="stats; else skeleton">
+  <a *ngFor="let c of cards"
+     class="stat-card"
+     [class.clickable]="c.link"
+     [routerLink]="c.link || null"
+     [attr.data-color]="c.color">
+    <div class="stat-icon">{{ c.icon }}</div>
+    <div class="stat-body">
+      <span class="stat-value">{{ c.value }}</span>
+      <span class="stat-label">{{ c.label }}</span>
+    </div>
+    <span class="stat-arrow" *ngIf="c.link">→</span>
+  </a>
+</div>
+
+<ng-template #skeleton>
+  <div class="grid">
+    <div *ngFor="let i of [1,2,3,4,5,6,7]" class="stat-card skeleton"></div>
+  </div>
+</ng-template>
