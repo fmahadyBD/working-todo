@@ -1,32 +1,168 @@
+<!-- ============ HEADER ============ -->
 <header class="page-head fade-up">
   <div>
     <h1>Dashboard</h1>
     <p class="subtitle">Overview of your tasks and progress</p>
   </div>
   <button class="ghost" (click)="load()" [disabled]="loading">
-    {{ loading ? 'Loading…' : '↻ Refresh' }}
+    <i class="fa-solid" [ngClass]="loading ? 'fa-spinner fa-spin' : 'fa-rotate-right'"></i>
+    {{ loading ? 'Loading…' : 'Refresh' }}
   </button>
 </header>
 
-<div *ngIf="error" class="alert-error fade-up">⚠️ {{ error }}</div>
+<!-- ============ ERROR ============ -->
+<div *ngIf="error" class="alert-error fade-up">
+  <i class="fa-solid fa-triangle-exclamation"></i> {{ error }}
+</div>
 
-<div class="grid" *ngIf="stats; else skeleton">
+<!-- ============ HERO ROW ============ -->
+<section class="hero-row fade-up" *ngIf="stats; else skeletonHero">
+
+  <div class="progress-card">
+    <div class="ring-wrap">
+      <svg class="ring" viewBox="0 0 120 120">
+        <defs>
+          <linearGradient id="ringGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stop-color="#6366f1"/>
+            <stop offset="100%" stop-color="#a855f7"/>
+          </linearGradient>
+        </defs>
+        <circle class="ring-bg" cx="60" cy="60" r="52"></circle>
+        <circle class="ring-fill"
+                cx="60" cy="60" r="52"
+                [style.stroke-dasharray]="ringCircumference"
+                [style.stroke-dashoffset]="ringDashOffset">
+        </circle>
+      </svg>
+      <div class="ring-label">
+        <span class="ring-value">{{ completionPercent }}%</span>
+        <span class="ring-caption">complete</span>
+      </div>
+    </div>
+
+    <div class="progress-info">
+      <h3>Overall Progress</h3>
+      <p>
+        <strong>{{ stats.completedTasks }}</strong> done ·
+        <strong>{{ stats.pendingTasks }}</strong> pending
+      </p>
+      <div class="progress-meta">
+        <span><i class="fa-solid fa-list-check"></i> {{ totalTasks }} active</span>
+        <span><i class="fa-solid fa-bell"></i> {{ stats.unreadNotifications }} unread</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="quick-stats">
+    <div class="quick-item">
+      <div class="quick-icon qi-indigo"><i class="fa-solid fa-sun"></i></div>
+      <div>
+        <span class="quick-value">{{ stats.todayTasks }}</span>
+        <span class="quick-label">Today</span>
+      </div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon qi-cyan"><i class="fa-solid fa-cloud-sun"></i></div>
+      <div>
+        <span class="quick-value">{{ stats.tomorrowTasks }}</span>
+        <span class="quick-label">Tomorrow</span>
+      </div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon qi-green"><i class="fa-solid fa-circle-check"></i></div>
+      <div>
+        <span class="quick-value">{{ stats.completedTasks }}</span>
+        <span class="quick-label">Completed</span>
+      </div>
+    </div>
+    <div class="quick-item">
+      <div class="quick-icon qi-amber"><i class="fa-solid fa-hourglass-half"></i></div>
+      <div>
+        <span class="quick-value">{{ stats.pendingTasks }}</span>
+        <span class="quick-label">Pending</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<ng-template #skeletonHero>
+  <section class="hero-row">
+    <div class="progress-card skeleton"></div>
+    <div class="quick-stats skeleton"></div>
+  </section>
+</ng-template>
+
+<!-- ============ KPI CARDS ============ -->
+<div class="grid" *ngIf="stats; else skeletonCards">
   <a *ngFor="let c of cards"
      class="stat-card"
      [class.clickable]="c.link"
      [routerLink]="c.link || null"
      [attr.data-color]="c.color">
-    <div class="stat-icon">{{ c.icon }}</div>
+    <div class="stat-icon">
+      <i class="fa-solid" [ngClass]="c.icon"></i>
+    </div>
     <div class="stat-body">
       <span class="stat-value">{{ c.value }}</span>
       <span class="stat-label">{{ c.label }}</span>
+      <span class="stat-sub" *ngIf="c.subtitle">{{ c.subtitle }}</span>
     </div>
-    <span class="stat-arrow" *ngIf="c.link">→</span>
+    <i class="fa-solid fa-arrow-right stat-arrow" *ngIf="c.link"></i>
   </a>
 </div>
 
-<ng-template #skeleton>
+<ng-template #skeletonCards>
   <div class="grid">
     <div *ngFor="let i of [1,2,3,4,5,6,7]" class="stat-card skeleton"></div>
   </div>
 </ng-template>
+
+<!-- ============ LINE CHART ============ -->
+<section class="charts-row fade-up" *ngIf="stats">
+  <div class="chart-card wide">
+    <header class="chart-head">
+      <div>
+        <h3><i class="fa-solid fa-chart-line"></i> Activity — last 7 days</h3>
+        <p class="chart-sub">Tasks created vs completed</p>
+      </div>
+    </header>
+    <div class="chart-body">
+      <canvas baseChart
+              [type]="lineType"
+              [data]="lineData"
+              [options]="lineOptions">
+      </canvas>
+    </div>
+  </div>
+</section>
+
+<!-- ============ BAR + DOUGHNUT ============ -->
+<section class="charts-row fade-up" *ngIf="stats">
+  <div class="chart-card">
+    <header class="chart-head">
+      <h3><i class="fa-solid fa-chart-column"></i> By section</h3>
+      <p class="chart-sub">Active tasks per timeframe</p>
+    </header>
+    <div class="chart-body">
+      <canvas baseChart
+              [type]="barType"
+              [data]="barData"
+              [options]="barOptions">
+      </canvas>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <header class="chart-head">
+      <h3><i class="fa-solid fa-chart-pie"></i> Distribution</h3>
+      <p class="chart-sub">Status breakdown</p>
+    </header>
+    <div class="chart-body">
+      <canvas baseChart
+              [type]="doughnutType"
+              [data]="doughnutData"
+              [options]="doughnutOptions">
+      </canvas>
+    </div>
+  </div>
+</section>
